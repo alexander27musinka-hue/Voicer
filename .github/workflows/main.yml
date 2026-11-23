@@ -23,7 +23,13 @@ jobs:
 
       - name: Build debug APK
         working-directory: VoiceControl
-        run: gradle assembleDebug --no-daemon
+        run: |
+          for i in 1 2 3 4; do
+            gradle assembleDebug --no-daemon && exit 0
+            echo "Попытка $i не удалась, жду 60 секунд..."
+            sleep 60
+          done
+          exit 1
 
       - uses: actions/upload-artifact@v4
         with:
